@@ -20,7 +20,7 @@
         <!-------------------------------------------->
         <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
         <link rel="stylesheet" href="./styles/style.css">
-
+        <link rel="stylesheet" href="./styles/main.css">
     </head>
 
     <body>
@@ -32,9 +32,34 @@
         <nav id="navbarPlaceholder"></nav>
 
         <!-- the body of your page goes here -->
-         <h1>
-            Hello world
-         </h1>
+        <div id="info" class="container border-bottom">
+            <h1 class="text-center">
+                <span id="userName">{{user}}</span>'s Household
+            </h1>
+            <h5 id="applianceCount" class="text-center">
+                <span id="applianceCountNum">{{count}}</span> appliances
+            </h5>
+        </div>
+
+        <a href="#" class="text-decoration-none">
+            <div class="card add-appliance-card" style="margin: 2em;" id="addAppliance">
+                <div class="card-body d-flex align-items-center">
+                    <img src="./images/plus.png" alt="Add" width="40" height="40" class="mr-2">
+                    <h5 class="card-title mb-0 text-dark">Add Appliance</h5>
+                </div>
+            </div>
+        </a>
+
+        <div class="card" style="margin: 2em;" id="reminderTemplate">
+            <div class="card-header" id="reminderCount">
+                Reminder <span id="reminderCountNum">{{reminderCount}}</span>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title" id="applianceName">{{applianceName}}</h5>
+                <p class="card-text" id="reminderDescription">{{reminderDescription}}</p>
+                <small class="text-muted">Last service: <span id="deltaTime">{{deltaTime}}</span> ago</small>
+            </div>
+        </div>
         <!-- stuff -->
 
         <!-- our own footer goes here-->
