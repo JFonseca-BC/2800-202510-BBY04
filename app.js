@@ -6,9 +6,14 @@ const port = process.env.PORT || 8000;
 app.use("/scripts", express.static("./public/scripts"));
 app.use("/styles", express.static("./public/styles"));
 
-app.get("/", (req, res) => {
-    let homePage = fs.readFileSync("./app/html/index.html", "utf8");
-    res.send(homePage);
+app.get("/sds", (req, res) => {
+    let sdsPage = fs.readFileSync("./app/html/sds.html", "utf8");
+    res.send(sdsPage);
+});
+
+app.use(function (req, res) {
+    res.status(404);
+    res.send("Page not found - 404");
 });
 
 app.listen(port, () => {
