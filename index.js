@@ -18,6 +18,8 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
+app.use('/app', express.static(path.join(__dirname, 'app')));
+
 app.get('/', (req, res) => {
     fs.readFile(path.join(__dirname, 'app', 'html', 'main.html'), 'utf8', (err, data) => {
         res.send(data);
