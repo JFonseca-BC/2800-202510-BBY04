@@ -1,5 +1,24 @@
 {
+  "name": "2800-202510-bby04",
+  "version": "1.0.0",
+  "description": "Team Name: BBY-04\r Team Members: \r - Ervin Santiago - Set 2A\r - Esin Sahutoglu - Set 1A\r - Alex Fisher - Set 1D\r - Jacob Fonseca - Set 2D\r ## More details to come\r TBA",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JFonseca-BC/2800-202510-BBY04.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JFonseca-BC/2800-202510-BBY04/issues"
+  },
+  "homepage": "https://github.com/JFonseca-BC/2800-202510-BBY04#readme",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "express-session": "^1.18.1"
   }
 }
