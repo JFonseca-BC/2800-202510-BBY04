@@ -14,16 +14,18 @@ app.use(session({
     cookie: { secure: false }
 }));
 
-app.use('/styles', express.static(path.join(__dirname, 'styles')));
-
-app.use('/scripts', express.static(path.join(__dirname, 'scripts')));
-
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-app.use('/text', express.static(path.join(__dirname, 'text')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
     fs.readFile(path.join(__dirname, 'main.html'), 'utf8', (err, data) => {
+        res.send(data);
+    });
+});
+
+app.get("/sds", (req, res) => {
+    fs.readFile(path.join(__dirname, 'sds.html'), 'utf8', (err, data) => {
         res.send(data);
     });
 });
