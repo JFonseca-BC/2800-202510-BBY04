@@ -32,6 +32,12 @@ app.get("/sds", (req, res) => {
     });
 });
 
+app.get("/login", (req, res) => {
+    fs.readFile(path.join(__dirname, 'app', 'html', 'login.html'), 'utf8', (err, data) => {
+        res.send(data);
+    });
+});
+
 app.use((req, res, next) => {
     res.status(404);
     res.send("Page not found - 404");
