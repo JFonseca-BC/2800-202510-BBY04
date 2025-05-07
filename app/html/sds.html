@@ -20,21 +20,19 @@
         <nav id="navbarPlaceholder"></nav>
         <div class="mx-auto p-3" style="width: 70%">
             <h1 class="mx-auto p-2 d-flex justify-content-center"><strong>Safety Data Sheets</strong></h1>
-            <table id="links-table-placeholder" class="table table-bordered text-center">
-                <tr>
-                    <td><a href="#A">A</a></td>
+            <table id="links-table-container" class="table table-bordered text-center">
+                <tr id="links-table-row">
                 </tr>
             </table>
             <div id="chemical-links-container">
-                <div id="chemical-box-placeholder" class="card">
+                <template id="chemical-box-template" class="card">
                     <div class="card-body">
                         <h2 class="card-title" id="A">A</h2>
                         <div class="list-group-flush">
                             <a href="#" target="_blank" class="list-group-item list-group-item-action">Ammonia</a>
-                            <a href="#" target="_blank" class="list-group-item list-group-item-action">Acetic Acid</a>
                         </div>
                     </div>
-                </div>
+                </template>
             </div>
         </div>
         <nav id="footerPlaceholder"></nav>
