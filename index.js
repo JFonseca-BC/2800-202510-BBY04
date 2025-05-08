@@ -9,14 +9,14 @@ const app = express();
 const port = 8000;
 const saltRounds = 12;
 
-/* Connect to MongoDB Properly */
+// Connect to MongoDB Properly
 const connectDB = require("./databaseConnection");
 
 async function setupServer() {
     const database = await connectDB(); // Wait for database connection
     const userCollection = database.collection("users"); // Now this works!
 
-    /* Middleware Setup */
+    // Middleware Setup 
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
@@ -32,24 +32,21 @@ async function setupServer() {
         resave: true
     }));
 
+    // Serve Static Files
+    app.use("/images", express.static(path.join(__dirname, "images")));
+    app.use("/public", express.static(path.join(__dirname, "public")));
+    app.use("/app", express.static(path.join(__dirname, "app")));
 
-// Serve Static Files
-app.use("/images", express.static(path.join(__dirname, "images")));
-app.use("/public", express.static(path.join(__dirname, "public")));
-app.use("/app", express.static(path.join(__dirname, "app")));
-
-
-
-// Root Route
-app.get("/", (req, res) => {
-    if (!req.session.user) {
-        return res.redirect("/login");
-    }
-    res.redirect("/main");
-});
+    // Root Route
+    app.get("/", (req, res) => {
+        if (!req.session.user) {
+            return res.redirect("/login");
+        }
+        res.redirect("/main");
+    });
 
 
-    /* Register Route */
+    // Register Route
     app.post("/register", async (req, res) => {
         console.log("Received registration request:", req.body);
 
@@ -88,8 +85,8 @@ app.get("/", (req, res) => {
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) return res.status(400).send("Invalid credentials. Try again.");
     
-            req.session.user = { email }; // Stores session
-            res.redirect("/main"); //Redirects properly
+            req.session.user = { email };
+            res.redirect("/main"); 
         } catch (error) {
             res.status(500).send("Server error");
         }
@@ -98,32 +95,25 @@ app.get("/", (req, res) => {
     // Home Route (Restricted)
     app.get("/main", (req, res) => {
         if (!req.session.user) {
-            return res.redirect("/login"); // Redirects back to login if unauthenticated
+            return res.redirect("/login");
         }
         res.sendFile(path.join(__dirname, "app", "html", "main.html"));
     });
     
-    
-    app.use((req, res, next) => {
-        res.status(404);
+    // SDS Route
+    app.get("/sds", (req, res) => {
+        res.sendFile(path.join(__dirname, "app", "html", "sds.html"));
+    });
+
+    app.get("*dummy", (req, res) => {
+        res.status = 404;
         res.send("Page not found - 404");
     });
 
 
-
-
-
-
-
-
-
-
-
-
-
-    /* ✅ Start Server */
+    // Start Server
     app.listen(port, () => {
-        console.log(`✅ Server running at http://localhost:${port}`);
+        console.log(`Server running at http://localhost:${port}`);
     });
 }
 
