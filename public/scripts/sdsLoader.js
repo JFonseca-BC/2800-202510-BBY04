@@ -22,4 +22,8 @@ function ajaxGET(url, callback)
     xhr.send();
 }
 
+function loadSDSContent()
+{
+
+}
 
