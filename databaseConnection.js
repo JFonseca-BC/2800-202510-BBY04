@@ -8,7 +8,7 @@ const mongodb_database = process.env.MONGODB_DATABASE;
 
 const atlasURI = `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_host}/?retryWrites=true&w=majority`;
 
-const client = new MongoClient(atlasURI, { useUnifiedTopology: true });
+const client = new MongoClient(atlasURI, {});
 
 async function connectDB() {
     try {
