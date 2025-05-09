@@ -150,7 +150,7 @@ async function setupServer() {
     });
 
     app.get("*dummy", (req, res) => {
-        res.status = 404;
+        res.status(404);
         res.send("Page not found - 404");
     });
 
