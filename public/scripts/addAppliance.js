@@ -1,5 +1,3 @@
-// File: public/scripts/addAppliance.js
-
 document.addEventListener('DOMContentLoaded', function() {
     // Get DOM elements
     const addApplianceCard = document.getElementById('addAppliance');
