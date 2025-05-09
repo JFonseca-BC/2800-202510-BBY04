@@ -59,21 +59,21 @@ async function setupServer() {
     app.post("/register", async (req, res) => {
         console.log("Received registration request:", req.body);
 
-        const { email, password } = req.body;
-        if (!email || !password) return res.status(400).send("Missing required fields.");
+        const { name, email, password } = req.body;
+        if (!name || !email || !password) return res.status(400).send("Missing required fields.");
 
         try {
             const existingUser = await userCollection.findOne({ email });
             if (existingUser) return res.status(400).send("Email already registered.");
 
             const hashedPassword = await bcrypt.hash(password, saltRounds);
-            await userCollection.insertOne({ email, password: hashedPassword });
+            await userCollection.insertOne({ name, email, password: hashedPassword });
 
-            req.session.userEmail = email;
-            console.log(" User registered successfully:", email);
-            res.redirect("/login");
+            req.session.user = { name, email };
+            console.log("User registered successfully:", name, email);
+            res.redirect("/main");
         } catch (error) {
-            console.error(" Registration error:", error);
+            console.error("Registration error:", error);
             res.status(500).send("Error registering user.");
         }
     });
@@ -86,15 +86,15 @@ async function setupServer() {
     // Login Route with MongoDB Authentication
     app.post("/login", async (req, res) => {
         const { email, password } = req.body;
-    
+
         try {
             const user = await userCollection.findOne({ email });
             if (!user) return res.status(400).send("Invalid credentials. Try again.");
-    
+
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) return res.status(400).send("Invalid credentials. Try again.");
-    
-            req.session.user = { email };
+
+            req.session.user = { name: user.name, email: user.email }; // Store name from DB in session
             res.redirect("/main"); 
         } catch (error) {
             res.status(500).send("Server error");
@@ -105,8 +105,12 @@ async function setupServer() {
     app.get("/main", (req, res) => {
         if (!req.session.user) {
             return res.redirect("/login");
+        } else {
+            fs.readFile(path.join(__dirname, 'html', 'main.html'), 'utf8', (err, data) => {
+                const htmlContent = data.replace('{{user}}', req.session.user.name); // Use user.name from session
+                res.send(htmlContent);
+            });
         }
-        res.sendFile(path.join(__dirname, "app", "html", "main.html"));
     });
     
     // SDS Route
