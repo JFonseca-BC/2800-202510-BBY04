@@ -106,7 +106,7 @@ async function setupServer() {
         if (!req.session.user) {
             return res.redirect("/login");
         } else {
-            fs.readFile(path.join(__dirname, 'html', 'main.html'), 'utf8', (err, data) => {
+            fs.readFile(path.join(__dirname, 'app', 'html', 'main.html'), 'utf8', (err, data) => {
                 const htmlContent = data.replace('{{user}}', req.session.user.name); // Use user.name from session
                 res.send(htmlContent);
             });
