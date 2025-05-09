@@ -5,7 +5,7 @@ console.log("Successfully called app.js");
 // (navbar, footer, and other things) into html doc. 
 //---------------------------------------------------
 function loadSkeleton() {
-    console.log($('#navbarPlaceholder').load('app/html/navbar.html'));
-    console.log($('#footerPlaceholder').load('app/html/footer.html'));
+    console.log($('#navbarPlaceholder').load('/app/html/navbar.html'));
+    console.log($('#footerPlaceholder').load('/app/html/footer.html'));
 }
 loadSkeleton();
