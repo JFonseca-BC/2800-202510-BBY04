@@ -149,6 +149,83 @@ async function setupServer() {
         res.render("sdsTemplate", {chemicalJSON: chemicalJSON[0]});
     });
 
+    // API endpoint to get current user
+    app.get("/api/user", (req, res) => {
+        if (!req.session.user) {
+            return res.status(401).json({ error: "Not authenticated" });
+        }
+        res.json({ email: req.session.user.email });
+    });
+
+    // API endpoint to save appliance
+    app.post("/api/appliances", async (req, res) => {
+        if (!req.session.user) {
+            return res.status(401).json({ error: "Not authenticated" });
+        }
+
+        try {
+            const { name, lastServiceDate, type, userEmail } = req.body;
+            
+            // Validate input
+            if (!name || !lastServiceDate || !type || !userEmail) {
+                return res.status(400).json({ error: "Missing required fields" });
+            }
+
+            // Save to database
+            const appliancesCollection = database.collection("appliances");
+            await appliancesCollection.insertOne({
+                name,
+                lastServiceDate,
+                type,
+                userEmail,
+                createdAt: new Date()
+            });
+
+            res.status(201).json({ success: true });
+        } catch (error) {
+            console.error("Error saving appliance:", error);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    });
+
+    // API endpoint to get appliances for current user
+    app.get("/api/appliances", async (req, res) => {
+        if (!req.session.user) {
+            return res.status(401).json({ error: "Not authenticated" });
+        }
+
+        try {
+            const appliancesCollection = database.collection("appliances");
+            const appliances = await appliancesCollection.find({
+                userEmail: req.session.user.email
+            }).sort({ createdAt: -1 }).toArray();
+
+            res.json(appliances);
+        } catch (error) {
+            console.error("Error getting appliances:", error);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    });
+
+    // API endpoint to get appliance count for current user
+    app.get("/api/appliances/count", async (req, res) => {
+        if (!req.session.user) {
+            return res.status(401).json({ error: "Not authenticated" });
+        }
+
+        try {
+            const appliancesCollection = database.collection("appliances");
+            const count = await appliancesCollection.countDocuments({
+                userEmail: req.session.user.email
+            });
+
+            res.json({ count });
+        } catch (error) {
+            console.error("Error getting appliance count:", error);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    });
+
     app.get("*dummy", (req, res) => {
         res.status = 404;
         res.send("Page not found - 404");
