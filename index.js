@@ -262,13 +262,41 @@ async function setupServer() {
 setupServer();
 
 async function chat(input) {
+    let initialPrompt = fs.readFileSync(path.join(__dirname, "app", "prompts", "initial-prompt.txt"));
+    let history = [
+        {
+            role: "user",
+            parts: [{ text: `System prompt: ${initialPrompt}`}]
+        },
+        {
+            role: "model",
+            parts: [{ text: "Understood."}]
+        },
+        {
+            role: "user",
+            parts: [{text: "What do I need to keep track of in my house?"}]
+        },
+        {
+            role: "model",
+            parts: [{text: "Before I can answer that question I'll need a more information:\n - What type of house do you live in (ex. apartment, house)?\n - "}]
+        },
+        {
+            role: "user",
+            parts: [{text: ""}]
+        },
+        {
+            role: "model",
+            parts: [{text: ""}]
+        }
+    ];
     const response = await ai.models.generateContent({
         model: "gemini-2.0-flash",
         contents: input,
         config: {
             maxOutputTokens: 500,
             temperature: 0.1
-        }
+        },
+        history
     });
     return response.text;
 }
