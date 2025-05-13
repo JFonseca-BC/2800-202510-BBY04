@@ -13,20 +13,24 @@
 
         <!-- Other libraries and styles -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="./public/styles/style.css">
+        <link rel="stylesheet" href="/public/styles/style.css">
 
     </head>
 
     <body>
         <nav id="navbarPlaceholder"></nav>
-        <div class="container mx-auto p-3 d-flex flex-column" style="width: 70%">
+        <div class="container mx-auto p-3 d-flex flex-column align-items-center" style="width: 70%">
             <h1 class="mx-auto p-2 d-flex justify-content-center"><strong>Safety Data Sheets</strong></h1>
-            <div id="letter-grouping-container" class="container-sm d-flex justify-content-center flex-row justify-content-center flex-wrap text-center m-1 w-100" role="group">
+            <div class="w-75">
+                <div id="letter-grouping-container" class="container-sm d-flex justify-content-center flex-row align-items-center flex-wrap text-center m-1 w-100 my-3" role="group">
                 <% letterGroups.forEach((letter) => { %>
                     <a href="#<%= letter %>" class="btn btn-outline-secondary col"><%= letter %></a>
                 <% }); %>
+                </div>
+                <input class="form-control w-100 my-3" type="search" placeholder="Search" aria-label=".form-control-lg example" id="sds-search">
             </div>
-            <div id="chemical-links-container">
+            
+            <div id="chemical-links-container" class="w-100">
                 <% letterGroups.forEach((letter) => { %>
                     <div class="card">
                         <div class="card-body">
@@ -34,7 +38,6 @@
                             <div class="chemical-list list-group list-group-flush">
                                 <% chemicalNames.sort().forEach((chemical) => { %>
                                     <% if(chemical.substance_name.charAt(0) == letter) { %>
-                                        
                                         <a href="/sds/<%= chemical.substance_name %>" class="list-group-item list-group-item-action"><%= chemical.substance_name %></a>
                                     <% } %>
                                 <% }); %>
@@ -50,6 +53,7 @@
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.min.js" integrity="sha384-RuyvpeZCxMJCqVUGFI0Do1mQrods/hhxYlcVfGPOfQtPJh0JCw12tUAZ/Mv10S7D" crossorigin="anonymous"></script>
-        <script src="./public/scripts/templateLoader.js"></script>
+        <script src="/public/scripts/templateLoader.js"></script>
+        <script src="/public/scripts/sdsSearch.js"></script>
     </body>
 </html>
