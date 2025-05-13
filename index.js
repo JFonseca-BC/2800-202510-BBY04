@@ -1,4 +1,5 @@
 require("dotenv").config();
+const { GoogleGenAI } = require("@google/genai");
 
 const express = require("express");
 const session = require("express-session");
@@ -7,7 +8,7 @@ const bcrypt = require("bcrypt");
 const path = require("path");
 const fs = require("fs");
 const Joi = require("joi");
-
+const ai = new GoogleGenAI({apiKey: process.env.GOOGLE_API_KEY });
 
 const app = express();
 const port = 8000;
@@ -17,14 +18,14 @@ const saltRounds = 12;
 const connectDB = require("./databaseConnection");
 
 async function setupServer() {
-    const database = await connectDB(); 
-    const userCollection = database.collection("users"); 
+    const database = await connectDB();
+    const userCollection = database.collection("users");
     const chemicalCollection = database.collection("chemicals");
 
     // Middleware Setup 
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
-    
+
 
     const mongoStore = MongoStore.create({
         mongoUrl: `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}/sessions`,
@@ -81,8 +82,8 @@ async function setupServer() {
     app.get("/login", (req, res) => {
         res.sendFile(path.join(__dirname, "app", "html", "login.html"));
     });
-    
-    
+
+
     // Login Route with MongoDB Authentication
     app.post("/login", async (req, res) => {
         const { email, password } = req.body;
@@ -95,12 +96,12 @@ async function setupServer() {
             if (!isMatch) return res.status(400).send("Invalid credentials. Try again.");
 
             req.session.user = { name: user.name, email: user.email }; // Store name from DB in session
-            res.redirect("/main"); 
+            res.redirect("/main");
         } catch (error) {
             res.status(500).send("Server error");
         }
     });
-    
+
     // Home Route (Restricted)
     app.get("/main", (req, res) => {
         if (!req.session.user) {
@@ -112,16 +113,16 @@ async function setupServer() {
             });
         }
     });
-    
+
     // SDS Route
     app.get("/sds", async (req, res) => {
         if (!req.session.user) {
             return res.redirect("/login");
         }
-        
-        const chemicalNames = await chemicalCollection.find({}).project({substance_name:1, _id:1}).toArray();
+
+        const chemicalNames = await chemicalCollection.find({}).project({ substance_name: 1, _id: 1 }).toArray();
         let letterGroups = createLetterGroups(chemicalNames.map((c) => c.substance_name));
-        res.render("sds", {chemicalNames:chemicalNames, letterGroups:letterGroups});
+        res.render("sds", { chemicalNames: chemicalNames, letterGroups: letterGroups });
     });
 
     app.get("/sds/:substance_name", async (req, res) => {
@@ -133,34 +134,31 @@ async function setupServer() {
 
         const schema = Joi.string().max(30).required();
         const validationResult = schema.validate(substance_name);
-        if(validationResult.error != null)
-        {
+        if (validationResult.error != null) {
             res.redirect("/sds");
             return;
         }
 
-        const chemicalJSON = await chemicalCollection.find({substance_name: substance_name}).toArray();
-        if(!chemicalJSON[0])
-        {
+        const chemicalJSON = await chemicalCollection.find({ substance_name: substance_name }).toArray();
+        if (!chemicalJSON[0]) {
             res.redirect("/sds");
             return;
         }
 
-        res.render("sdsTemplate", {chemicalJSON: chemicalJSON[0]});
+        res.render("sdsTemplate", { chemicalJSON: chemicalJSON[0] });
     });
 
-    app.post("/sdsSearch", async(req, res) => {
+    app.post("/sdsSearch", async (req, res) => {
         let searchInput = req.body.search;
 
         const schema = Joi.string().max(30).required();
         const validationResult = schema.validate(searchInput);
 
-        if(validationResult.error != null)
-        {
+        if (validationResult.error != null) {
             return;
         }
 
-        const chemicals = await chemicalCollection.find({substance_name: {$regex: searchInput, $options: "i"}}).toArray();
+        const chemicals = await chemicalCollection.find({ substance_name: { $regex: searchInput, $options: "i" } }).toArray();
         res.json(chemicals);
     });
 
@@ -180,7 +178,7 @@ async function setupServer() {
 
         try {
             const { name, lastServiceDate, type, userEmail } = req.body;
-            
+
             // Validate input
             if (!name || !lastServiceDate || !type || !userEmail) {
                 return res.status(400).json({ error: "Missing required fields" });
@@ -241,6 +239,15 @@ async function setupServer() {
         }
     });
 
+    app.get("/vestabot", async (req, res) => {
+        res.sendFile(path.join(__dirname, "app", "html", "vestabot.html"));
+    });
+
+    app.post("/vestabotChat", async (req, res) => {
+        let outputText = await chat(req.body.input);
+        res.send(outputText);
+    });
+
     app.get("*dummy", (req, res) => {
         res.status(404);
         res.send("Page not found - 404");
@@ -254,6 +261,18 @@ async function setupServer() {
 
 setupServer();
 
+async function chat(input) {
+    const response = await ai.models.generateContent({
+        model: "gemini-2.0-flash",
+        contents: input,
+        config: {
+            maxOutputTokens: 500,
+            temperature: 0.1
+        }
+    });
+    return response.text;
+}
+
 /**
  * Returns an array of the different letter groupings of chemicals, based on their first 
  * letter.
@@ -262,14 +281,12 @@ setupServer();
  * @returns a String array of letters sorted in alphabetical order that represents the 
  *          different letter groups of chemicals.
  */
-function createLetterGroups(chemicalNames)
-{
+function createLetterGroups(chemicalNames) {
     let nonUniqueFirstChars = chemicalNames.map((name) => name.toUpperCase().substring(0, 1));
 
     let uniqueAlpha = [];
     nonUniqueFirstChars.forEach((letter) => {
-        if(!uniqueAlpha.includes(letter))
-        {
+        if (!uniqueAlpha.includes(letter)) {
             uniqueAlpha.push(letter);
         }
     });
