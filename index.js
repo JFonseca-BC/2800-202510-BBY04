@@ -149,6 +149,21 @@ async function setupServer() {
         res.render("sdsTemplate", {chemicalJSON: chemicalJSON[0]});
     });
 
+    app.post("/sdsSearch", async(req, res) => {
+        let searchInput = req.body.search;
+
+        const schema = Joi.string().max(30).required();
+        const validationResult = schema.validate(searchInput);
+
+        if(validationResult.error != null)
+        {
+            return;
+        }
+
+        const chemicals = await chemicalCollection.find({substance_name: {$regex: searchInput, $options: "i"}}).toArray();
+        res.json(chemicals);
+    });
+
     // API endpoint to get current user
     app.get("/api/user", (req, res) => {
         if (!req.session.user) {
