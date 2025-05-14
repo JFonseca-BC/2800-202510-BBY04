@@ -7,6 +7,7 @@ const bcrypt = require("bcrypt");
 const path = require("path");
 const fs = require("fs");
 const Joi = require("joi");
+const { ObjectId } = require('mongodb');
 
 
 const app = express();
@@ -237,6 +238,64 @@ async function setupServer() {
             res.json({ count });
         } catch (error) {
             console.error("Error getting appliance count:", error);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    });
+
+    // API endpoint to delete an appliance
+    app.delete("/api/appliances/:id", async (req, res) => {
+        if (!req.session.user) {
+            return res.status(401).json({ error: "Not authenticated" });
+        }
+
+        try {
+            const { id } = req.params;
+            const appliancesCollection = database.collection("appliances");
+            const result = await appliancesCollection.deleteOne({
+                _id: new ObjectId(id),
+                userEmail: req.session.user.email
+            });
+
+            if (result.deletedCount === 0) {
+                return res.status(404).json({ error: "Appliance not found" });
+            }
+
+            res.json({ success: true });
+        } catch (error) {
+            console.error("Error deleting appliance:", error);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    });
+
+    // API endpoint to update an appliance's service date
+    app.put("/api/appliances/:id", async (req, res) => {
+        if (!req.session.user) {
+            return res.status(401).json({ error: "Not authenticated" });
+        }
+
+        try {
+            const { id } = req.params;
+            const currentDate = new Date();
+            const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
+
+            const appliancesCollection = database.collection("appliances");
+            const result = await appliancesCollection.updateOne(
+                {
+                    _id: new ObjectId(id),
+                    userEmail: req.session.user.email
+                },
+                {
+                    $set: { lastServiceDate: formattedDate }
+                }
+            );
+
+            if (result.modifiedCount === 0) {
+                return res.status(404).json({ error: "Appliance not found or not updated" });
+            }
+
+            res.json({ success: true, lastServiceDate: formattedDate });
+        } catch (error) {
+            console.error("Error updating appliance:", error);
             res.status(500).json({ error: "Internal server error" });
         }
     });
