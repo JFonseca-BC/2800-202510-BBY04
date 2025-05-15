@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function showApplianceForm() {
         // Replace card content with form
         addApplianceCard.innerHTML = `
-            <div class="card-body">
+            <div class="card-body" id="applianceFormBody">
                 <form id="applianceForm">
                     <div class="mb-3">
                         <label for="applianceName" class="form-label">Appliance Name</label>
