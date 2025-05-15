@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function showApplianceForm() {
         // Replace card content with form
         addApplianceCard.innerHTML = `
-            <div class="card-body">
+            <div class="card-body" id="applianceFormBody">
                 <form id="applianceForm">
                     <div class="mb-3">
                         <label for="applianceName" class="form-label">Appliance Name</label>
@@ -150,6 +150,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
             });
             
+            const savedAppliance = await saveResponse.json();
+            
             if (!saveResponse.ok) {
                 throw new Error('Failed to save appliance');
             }
@@ -157,8 +159,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Reset the form
             resetAddApplianceCard();
             
-            // Create a new reminder card
+            // Create a new reminder card with the returned ID
             createReminderCard({
+                _id: savedAppliance.insertedId,
                 name: applianceName,
                 lastServiceDate: `${serviceYear}-${serviceMonth}`,
                 type: applianceType
@@ -189,10 +192,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Create reminder description based on appliance type
         let description = '';
         if (appliance.type === 'Alarm') {
-            description = 'Remember to check that your alarm is functioning this month.';
+            if (monthsSinceService === 0) {
+                description = 'Checked this month. Remember to check batteries and operation next month.';
+            } else if (monthsSinceService >= 1) {
+                description = 'Remember to check that your alarm is functioning this month.';
+            }
         } else {
             if (monthsSinceService === 0) {
-                description = 'Remember to call a professional to maintain this appliance in 12 months.';
+                description = 'Checked this month. Remember to call a professional to maintain this appliance in 12 months.';
             } else if (monthsSinceService >= 12) {
                 description = 'Remember to call a professional to maintain this appliance this month.';
             } else {
@@ -212,21 +219,119 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Create the new reminder card
         const newReminder = document.createElement('div');
-        newReminder.className = 'card reminder-card';
+        newReminder.className = 'card reminder-card mb-3';
         newReminder.style.margin = '2em';
+        newReminder.setAttribute('data-id', appliance._id);
         newReminder.innerHTML = `
-            <div class="card-header">
-                Reminder <span class="reminder-count">${reminderCount}</span>
+            <div class="card-header d-flex justify-content-between align-items-center" id="reminderHeader">
+                <span>Reminder <span class="reminder-count">${reminderCount}</span></span>
+                <div>
+                    <button class="btn btn-sm btn-outline-primary me-1 update-btn">Update</button>
+                    <button class="btn btn-sm btn-outline-danger delete-btn">Delete</button>
+                </div>
             </div>
-            <div class="card-body">
+            <div class="card-body" id="reminderBody">
                 <h5 class="card-title">${appliance.name}</h5>
                 <p class="card-text">${description}</p>
-                <small class="text-muted">Last service: <span>${formattedDate}</span></small>
+                <small class="text-muted">Last service: <span class="service-date">${formattedDate}</span></small>
             </div>
         `;
         
         // Insert the new reminder after the add appliance card
         addApplianceCard.insertAdjacentElement('afterend', newReminder);
+        
+        // Add event listener for delete button
+        newReminder.querySelector('.delete-btn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            deleteAppliance(appliance._id, newReminder);
+        });
+        
+        // Add event listener for update button
+        newReminder.querySelector('.update-btn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            updateAppliance(appliance._id, appliance.type, newReminder);
+        });
+    }
+    
+    // Function to delete an appliance
+    async function deleteAppliance(id, cardElement) {
+        if (!confirm('Are you sure you want to delete this appliance?')) {
+            return;
+        }
+        
+        try {
+            const response = await fetch(`/api/appliances/${id}`, {
+                method: 'DELETE'
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to delete appliance');
+            }
+            
+            // Remove the card from the DOM
+            cardElement.remove();
+            
+            // Update appliance count
+            updateApplianceCount();
+            
+            // Update reminder numbers
+            updateReminderNumbers();
+        } catch (error) {
+            console.error('Error deleting appliance:', error);
+            alert('Failed to delete appliance. Please try again.');
+        }
+    }
+    
+    // Function to update an appliance's service date
+    async function updateAppliance(id, type, cardElement) {
+        try {
+            const response = await fetch(`/api/appliances/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to update appliance');
+            }
+            
+            // Get the current date for display
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear();
+            const currentMonth = currentDate.getMonth() + 1;
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                              "July", "August", "September", "October", "November", "December"];
+            const formattedDate = `${monthNames[currentMonth - 1]} ${currentYear}`;
+            
+            // Update the displayed date
+            cardElement.querySelector('.service-date').textContent = formattedDate;
+            
+            // Update the description based on type
+            let description = '';
+            if (type === 'Alarm') {
+                description = 'Checked this month. Remember to check batteries and operation next month.';
+            } else {
+                description = 'Checked this month. Remember to call a professional to maintain this appliance in 12 months.';
+            }
+            
+            // Update the description
+            cardElement.querySelector('.card-text').textContent = description;
+            
+        } catch (error) {
+            console.error('Error updating appliance:', error);
+            alert('Failed to update appliance. Please try again.');
+        }
+    }
+    
+    // Function to update reminder numbers after deletion
+    function updateReminderNumbers() {
+        const reminderCards = document.querySelectorAll('.reminder-card');
+        reminderCards.forEach((card, index) => {
+            card.querySelector('.reminder-count').textContent = index + 1;
+        });
     }
     
     // Function to update the appliance count
@@ -255,9 +360,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const appliances = await response.json();
             
             appliances.forEach(appliance => {
+                const [year, month] = appliance.lastServiceDate.split('-');
                 createReminderCard({
+                    _id: appliance._id,
                     name: appliance.name,
-                    lastServiceDate: appliance.lastServiceDate.split('-').slice(0, 2).join('-'),
+                    lastServiceDate: `${year}-${month}`,
                     type: appliance.type
                 });
             });

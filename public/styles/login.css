@@ -4,7 +4,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(45deg, #ce9347, #c850c0);
+    background: linear-gradient(45deg, #dfaeb4, #dd9ac2);
 }
 
 .container {
@@ -18,6 +18,8 @@ body {
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    margin: 0 auto;
 }
 
 .form-header {
@@ -93,7 +95,7 @@ input:focus {
 button {
     width: 100%;
     padding: 12px;
-    background: linear-gradient(45deg, #ce9347, #c850c0);
+    background: linear-gradient(45deg, #dfaeb4, #dd9ac2);
     border: none;
     border-radius: 5px;
     color: white;

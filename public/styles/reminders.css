@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #info {
     padding-top: 3em;
     padding-bottom: 3em;
@@ -11,4 +12,115 @@
 #reminderTemplate:hover {
     cursor: pointer;
     background-color: #00000008;
+=======
+body{
+    background-color: rgb(233, 227, 221);
+}
+
+<<<<<<<< HEAD:public/styles/main.css
+
+.centered-image{
+ display:block;
+ margin:auto;
+ width: 40%;
+ height: auto;
+ border-radius: 200px;
+ margin-top: 170px;
+
+}
+
+
+.button{
+    display: block;
+    margin: auto;
+    margin-top: 80px;
+    align-items: center;
+    background: linear-gradient(45deg, #ce9347, #c850c0);
+    color: black;
+    padding: 15px;
+    border-radius:15px ;
+    cursor: pointer;
+    
+    
+}
+
+.button-link {
+    text-decoration: none; /* Removes underline */
+   
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+.button:hover {
+    animation: shake 0.3s ease-in-out;
+}
+
+#logo{
+    width: 50px;
+     margin-left: 10px
+}
+
+#profile{
+    margin-right: 25px;
+    width: 50px;
+    border-radius:30px ;
+}
+
+#navbarPlaceholder{
+    position: fixed; /* Keeps it stuck to the top */
+    top: 0; /* Aligns it to the ceiling */
+    left: 0;
+    width: 100%; /* Makes it take up the full line */
+    height: 60px; /* Adjust the height as needed */
+    background-color: #333; /* Set a background color */
+    padding: 10px; /* Adds some spacing */
+    display: flex; /* Enables flexbox */
+    align-items: center; /* Centers items vertically */
+    display: flex; /* Enables flexbox */
+    align-items: center; /* Centers items vertically */
+    justify-content: space-between;
+   
+}
+
+#footerPlaceholder{
+    position: fixed; /* Keeps it at the bottom */
+    bottom: 0;
+    left: 0;
+    width: 100%; /* Full width */
+    height: 60px; /* Adjust height */
+    background-color: #333; /* Background for visibility */
+    border-top: 3px solid #ccc; /* Adds a bottom border */
+    padding: 10px;
+    align-items: center; /* Centers items vertically */
+    display: flex; /* Enables flexbox */
+    align-items: center; /* Centers items vertically */
+    justify-content: space-between;
+}
+
+#contacts{
+   width: 50px; 
+   border-radius:30px ;
+}
+
+#sds{
+    width: 50px; 
+    border-radius:30px ; 
+}
+
+#home{
+     width: 50px; 
+     border-radius:30px ;
+     margin-right: 25px;
+========
+#addAppliance:hover {
+    background-color: #00000008;
+    cursor: pointer;
+>>>>>>>> reminders:public/styles/reminders.css
+>>>>>>> reminders
 }
