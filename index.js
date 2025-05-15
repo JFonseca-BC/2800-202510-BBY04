@@ -114,11 +114,11 @@ async function setupServer() {
     });
     
     // Home Route (Restricted)
-    app.get("/main", (req, res) => {
+    app.get("/reminders", (req, res) => {
         if (!req.session.user) {
             return res.redirect("/login");
         } else {
-            fs.readFile(path.join(__dirname, 'app', 'html', 'main.html'), 'utf8', (err, data) => {
+            fs.readFile(path.join(__dirname, 'app', 'html', 'reminders.html'), 'utf8', (err, data) => {
                 const htmlContent = data.replace('{{user}}', req.session.user.name); // Use user.name from session
                 res.send(htmlContent);
             });
