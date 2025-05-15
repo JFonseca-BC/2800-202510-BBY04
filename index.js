@@ -113,6 +113,12 @@ async function setupServer() {
         }
     });
     
+
+ app.get("/reminder", (req, res) => {
+        res.sendFile(path.join(__dirname, "app", "html", "reminder.html"));
+    });
+    
+    
     // SDS Route
     app.get("/sds", async (req, res) => {
         if (!req.session.user) {
