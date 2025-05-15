@@ -4,11 +4,11 @@ async function downloadPDF()
     let chemicalName = document.getElementById("chemical-name").innerText;
     
     let options = {
-        margin:       1,
+        margin:       0.5,
         filename:     `${chemicalName}.pdf`,
-        image:        {type: "jpeg", quality: 1 },
+        image:        {type: "jpeg", quality: 1},
         pagebreak:    {avoid: "div"},
-        html2canvas:  {scale: 2 },
+        html2canvas:  {scale: 2},
         jsPDF:        {unit: "in", format: "letter", orientation: "portrait"}
     };
 
