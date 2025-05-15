@@ -126,8 +126,8 @@ async function setupServer() {
     });
     
 
- app.get("/reminders", (req, res) => {
-        res.sendFile(path.join(__dirname, "app", "html", "reminders.html"));
+    app.get("/main", (req, res) => {
+        res.sendFile(path.join(__dirname, "app", "html", "main.html"));
     });
     
     
