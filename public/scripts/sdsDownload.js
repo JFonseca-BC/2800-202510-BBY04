@@ -1,3 +1,10 @@
+/**
+ * Generates a PDF file from the SDS HTML content on the page.
+ * Uses the chemical name as the filename, and formats the content
+ * with the PDF and image options below.
+ *
+ * Requires html2pdf.js.
+ */
 async function downloadPDF()
 {
     let sdsElement = document.getElementById("sds-document").innerHTML;
