@@ -12,12 +12,11 @@
 #reminderTemplate:hover {
     cursor: pointer;
     background-color: #00000008;
-=======
+}
+
 body{
     background-color: rgb(233, 227, 221);
 }
-
-<<<<<<<< HEAD:public/styles/main.css
 
 .centered-image{
  display:block;
@@ -117,10 +116,4 @@ body{
      width: 50px; 
      border-radius:30px ;
      margin-right: 25px;
-========
-#addAppliance:hover {
-    background-color: #00000008;
-    cursor: pointer;
->>>>>>>> reminders:public/styles/reminders.css
->>>>>>> reminders
 }
