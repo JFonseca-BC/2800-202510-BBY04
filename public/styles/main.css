@@ -7,8 +7,3 @@
     background-color: #00000008;
     cursor: pointer;
 }
-
-#reminderTemplate:hover {
-    cursor: pointer;
-    background-color: #00000008;
-}

@@ -223,14 +223,14 @@ document.addEventListener('DOMContentLoaded', function() {
         newReminder.style.margin = '2em';
         newReminder.setAttribute('data-id', appliance._id);
         newReminder.innerHTML = `
-            <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="card-header d-flex justify-content-between align-items-center" id="reminderHeader">
                 <span>Reminder <span class="reminder-count">${reminderCount}</span></span>
                 <div>
                     <button class="btn btn-sm btn-outline-primary me-1 update-btn">Update</button>
                     <button class="btn btn-sm btn-outline-danger delete-btn">Delete</button>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body" id="reminderBody">
                 <h5 class="card-title">${appliance.name}</h5>
                 <p class="card-text">${description}</p>
                 <small class="text-muted">Last service: <span class="service-date">${formattedDate}</span></small>
