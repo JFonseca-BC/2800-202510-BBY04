@@ -101,6 +101,17 @@ async function setupServer() {
             res.status(500).send("Server error");
         }
     });
+
+    // Logout Route
+    app.post("/logout", (req, res) => {
+        req.session.destroy(err => {
+            if (err) {
+                console.error("Error destroying session:", err);
+                return res.status(500).send("Error logging out");
+            }
+            res.redirect("/login");
+        });
+    });
     
     // Home Route (Restricted)
     app.get("/main", (req, res) => {
