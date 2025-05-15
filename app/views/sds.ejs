@@ -20,19 +20,19 @@
 
 <body>
     <nav id="navbarPlaceholder"></nav>
-    <div class="container mx-auto p-3 d-flex flex-column align-items-center" style="width: 70%">
+    <div class="container mx-auto p-3 d-flex flex-column align-items-center bg-white shadow" style="width: 70%; min-height: 100vh">
         <h1 class="mx-auto p-2 d-flex justify-content-center"><strong>Safety Data Sheets</strong></h1>
         <div class="w-75">
             <div class="d-none d-lg-flex justify-content-center flex-row flex-wrap align-items-center text-center my-3 w-100" id="letter-grouping-container" role="group">
                 <% letterGroups.forEach((letter)=> { %>
-                    <a href="#<%= letter %>" class="btn btn-outline-secondary col" style="margin: 2px;">
+                    <a href="#<%= letter %>" class="btn btn-outline-secondary col shadow-sm" style="margin: 2px;">
                         <%= letter %>
                     </a>
                 <% }); %>
             </div>
             <div class="d-lg-none my-3 text-center">
                 <div class="dropdown-center">
-                    <button class="btn btn-info text-white fw-bolder dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Sections</button>
+                    <button class="btn btn-outline-primary fw-bolder dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">Sections</button>
                     <ul class="dropdown-menu overflow-y-scroll" style="height: 20vh;">
                         <% letterGroups.forEach((letter)=> { %>
                             <li>
@@ -44,9 +44,9 @@
                     </ul>
                 </div>
             </div>
-            <div class="input-group rounded">
-                <label for="sds-search" id="search-addon" class="input-group-text my-3"><i class="material-icons">search</i></label>
-                <input class="form-control my-3 " type="search" placeholder="Search" aria-label=".form-control-lg example" id="sds-search" aria-label="Search" aria-describedby="search-addon">
+            <div class="input-group rounded my-3 mb-4 shadow-sm">
+                <label for="sds-search" id="search-addon" class="input-group-text"><i class="material-icons">search</i></label>
+                <input class="form-control" type="search" placeholder="Search" aria-label=".form-control-lg example" id="sds-search" aria-label="Search" aria-describedby="search-addon">
             </div>
         </div>
 
