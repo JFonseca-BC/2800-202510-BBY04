@@ -27,72 +27,99 @@
                 <div id="chemical-document-container" class="container list-group list-group-flush">
                     <div class="list-group-item">
                         <h4 class="p-3">1. Identification</h4>
-                        <p>Product Name: <%= chemicalJSON.substance_name %></p>
-                        <p>Recommended Use: <%= chemicalJSON.recommended_use %></p>
-                        <p>Supplier: <%= chemicalJSON.supplier_name %></p>
-                        <p>Supplier Address: <%= chemicalJSON.supplier_address %></p>
-                        <p>Supplier Phone: <%= chemicalJSON.supplier_phone %></p>
-                        <p>Emergency Phone: <%= chemicalJSON.emergency_phone %></p>
+                        <p><span>Product Name:</span> <%= chemicalJSON.substance_name %></p>
+                        <p><span>Recommended Use:</span> <%= chemicalJSON.recommended_use %></p>
+                        <p><span>Supplier:</span> <%= chemicalJSON.supplier.name %></p>
+                        <p><span>Supplier Address:</span> <%= chemicalJSON.supplier.address %></p>
+                        <p><span>Supplier Phone:</span> <%= chemicalJSON.supplier.phone %></p>
+                        <p><span>Emergency Phone:</span> <%= chemicalJSON.supplier.emergency_phone %></p>
                     </div>
                     <div class="list-group-item">
                         <h4 class="p-3">2. Hazard Identification</h4>
-                        <p><%= chemicalJSON.hazard_identification %></p>
+                        <p><%= chemicalJSON.hazard_identification.hazards %></p>
                     </div>
                     <div class="list-group-item">
                         <h4 class="p-3">3. Composition/Ingredients</h4>
-                        <p><%= chemicalJSON.composition_information %></p>
+                        <p><span>Component:</span> <%= chemicalJSON.composition_information.component %></p>
+                        <p><span>CAS-No:</span> <%= chemicalJSON.composition_information.cas_no %></p>
+                        <p><span>Weight:</span> <%= chemicalJSON.composition_information.weight %></p>
                     </div>
                     <div class="list-group-item">
                         <h4 class="p-3">4. First-Aid Measures</h4>
-                        <p><%= chemicalJSON.first_aid_measures %></p>
+                        <p><span>Eye Contact:</span> <%= chemicalJSON.first_aid_measures.eye_contact %></p>
+                        <p><span>Skin Contact:</span> <%= chemicalJSON.first_aid_measures.skin_contact %></p>
+                        <p><span>Inhalation:</span> <%= chemicalJSON.first_aid_measures.inhalation %></p>
+                        <p><span>Ingestion:</span> <%= chemicalJSON.first_aid_measures.ingestion %></p>
+                        <p><span>Symptoms/Effects:</span> <%= chemicalJSON.first_aid_measures.symptoms_effects %></p>
+                        <p><span>Notes to Physicians:</span> <%= chemicalJSON.first_aid_measures.notes_to_physician %></p>
                     </div>
                     <div class="list-group-item">
                         <h4 class="p-3">5. Fire-Fighting Measures</h4>
-                        <p><%= chemicalJSON.fire_fighting_measures %></p>
+                        <p><span>Extinguishing Media:</span> <%= chemicalJSON.fire_fighting_measures.extinguishing_media %></p>
+                        <p><span>Extinguishing Media:</span> <%= chemicalJSON.fire_fighting_measures.special_instructions %></p>
                     </div>
                     <div class="list-group-item">
                         <h4 class="p-3">6. Accidental Release Measures</h4>
-                        <p><%= chemicalJSON.accidental_release_measures %></p>
+                        <p><span>Personal Precautions:</span> <%= chemicalJSON.accidental_release_measures.personal_precautions %></p>
+                        <p><span>Environmental Precautions:</span> <%= chemicalJSON.accidental_release_measures.environmental_precautions %></p>
+                        <p><span>Cleanup Methods:</span> <%= chemicalJSON.accidental_release_measures.cleanup_methods %></p>
                     </div>
                     <div class="list-group-item">
                         <h4 class="p-3">7. Handling and Storage</h4>
-                        <p><%= chemicalJSON.handling_and_storage %></p>
+                        <p><span>Handling:</span> <%= chemicalJSON.handling_and_storage.handling %></p>
+                        <p><span>Storage:</span> <%= chemicalJSON.handling_and_storage.storage %></p>
                     </div>
                     <div class="list-group-item">
                         <h4 class="p-3">8. Exposure Controls/Personal Protection</h4>
-                        <p><%= chemicalJSON.exposure_controls_personal_protection %></p>
+                        <p><span>Engineering Measures:</span> <%= chemicalJSON.exposure_controls_personal_protection.engineering_measures %></p>
+                        <p><span>Eye Face Protection:</span> <%= chemicalJSON.exposure_controls_personal_protection.eye_face_protection %></p>
+                        <p><span>Skin Body Protection:</span> <%= chemicalJSON.exposure_controls_personal_protection.skin_body_protection %></p>
+                        <p><span>Respiratory Protection:</span> <%= chemicalJSON.exposure_controls_personal_protection.respiratory_protection %></p>
+                        <p><span>Hygiene Measures:</span> <%= chemicalJSON.exposure_controls_personal_protection.hygiene_measures %></p>
                     </div>
                     <div class="list-group-item">
                         <h4 class="p-3">9. Physical and Chemical Properties</h4>
-                        <p><%= chemicalJSON.physical_and_chemical_properties  %></p>
+                        <p><span>Appearance:</span> <%= chemicalJSON.physical_and_chemical_properties.appearance %></p>
+                        <p><span>Odor:</span> <%= chemicalJSON.physical_and_chemical_properties.odor %></p>
+                        <p><span>pH:</span> <%= chemicalJSON.physical_and_chemical_properties.pH %></p>
+                        <p><span>Solubility:</span> <%= chemicalJSON.physical_and_chemical_properties.solubility %></p>
+                        <p><span>Melting Point:</span> <%= chemicalJSON.physical_and_chemical_properties.melting_point %></p>
+                        <p><span>Boiling Point:</span> <%= chemicalJSON.physical_and_chemical_properties.boiling_point %></p>
                     </div>
                     <div class="list-group-item">
                         <h4 class="p-3">10. Stability and Reactivity</h4>
-                        <p><%= chemicalJSON.stability_and_reactivity %></p>
+                        <p><span>Reactivity:</span> <%= chemicalJSON.stability_and_reactivity.reactivity %></p>
+                        <p><span>Stability:</span> <%= chemicalJSON.stability_and_reactivity.stability %></p>
+                        <p><span>Conditions to Avoid:</span> <%= chemicalJSON.stability_and_reactivity.conditions_to_avoid %></p>
+                        <p><span>Incompatible Materials:</span> <%= chemicalJSON.stability_and_reactivity.incompatible_materials %></p>
                     </div>
                     <div class="list-group-item">
                         <h4 class="p-3">11. Toxicology Information</h4>
-                        <p><%= chemicalJSON.toxicological_information %></p>
+                        <p><%= chemicalJSON.toxicological_information.symptoms %></p>
                     </div>
                     <div class="list-group-item">
                         <h4 class="p-3">12. Ecological Information</h4>
-                        <p><%= chemicalJSON.ecological_information %></p>
+                        <p><%= chemicalJSON.ecological_information.environmental_impact %></p>
                     </div>
                     <div class="list-group-item">
                         <h4 class="p-3">13. Disposal Considerations</h4>
-                        <p><%= chemicalJSON.disposal_considerations %></p>
+                        <p><%= chemicalJSON.disposal_considerations.disposal_guidance %></p>
                     </div>
                     <div class="list-group-item">
                         <h4 class="p-3">14. Transportation Information</h4>
-                        <p><%= chemicalJSON.transport_information %></p>
+                        <h5>DOT</h5>
+                        <p><span>UN-No:</span> <%= chemicalJSON.transport_information.UN_no %></p>
+                        <p><span>Proper Shipping Name:</span> <%= chemicalJSON.transport_information.proper_shipping_name %></p>
+                        <p><span>Hazard Class:</span> <%= chemicalJSON.transport_information.hazard_class %></p>
+                        <p><span>Packing Group:</span> <%= chemicalJSON.transport_information.packing_group %></p>
                     </div>
                     <div class="list-group-item">
                         <h4 class="p-3">15. Regulatory Information</h4>
-                        <p><%= chemicalJSON.regulatory_information %></p>
+                        <p><%= chemicalJSON.regulatory_information.details %></p>
                     </div>
                     <div class="list-group-item">
                         <h4 class="p-3">16. Other Information</h4>
-                        <p><%= chemicalJSON.other_information %></p>
+                        <p>Updated on <%= chemicalJSON.other_information.information_date %></p>
                     </div>
                 </div>
             </div>
