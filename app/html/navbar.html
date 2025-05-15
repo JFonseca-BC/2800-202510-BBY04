@@ -1,31 +1,14 @@
-<style>
-    #navbarContainer {
-        background: linear-gradient(#dfaeb4, #dd9ac2);
-    }
-    
-    #logo {
-        width: 50px;
-        height: 50px;
-        margin: 0 20px;
-    }
-
-    #logoutButton {
-        margin: 0 20px;
-        border: white solid 1px;
-        color: white;
-    }
-
-    #logoutButton:hover {
-        border: #dc3545 solid 1px;
-    }
-</style>
-
-<nav class="navbar navbar-light bg-light border-bottom" id="navbarContainer">
+<nav class="navbar bg-light" id="navbarContainer">
     <a class="navbar-brand" href="/main">
-      <img src="/images/logo-icon.png" id="logo">
+        <img src="/images/logo-icon.png" id="logo">
     </a>
+    <div class="d-none d-lg-flex fs-4 text-center">
+        <a href="/reminders" class="link-light align-middle link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover mx-5">Reminders</a>
+        <a href="/sds" class="link-light align-middle link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover mx-5">SDS</a>
+        <a href="/contacts" class="link-light align-middle link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover mx-5">Technicians</a>
+    </div>
 
-    <form class="ml-auto" action="/logout" method="POST">
+    <form class="ms-auto" action="/logout" method="POST">
       <button type="submit" class="btn btn-outline-danger" id="logoutButton">Log Out</button>
     </form>
 </nav>
