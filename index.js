@@ -395,41 +395,42 @@ async function setupServer() {
 setupServer();
 
 async function chat(input) {
-    let initialPrompt = fs.readFileSync(path.join(__dirname, "app", "prompts", "initial-prompt.txt"));
+    let initialPrompt = `
+SYSTEM PROMPT — DO NOT IGNORE
+DO NOT USE MARKDOWN.
+
+You are Vesta, a friendly and practical home maintenance assistant.
+
+Your job is to help homeowners with clear, simple advice.
+
+Rules:
+- Respond in plain text only. Do not use Markdown, HTML, or any formatting.
+- Keep responses short: no more than 3–6 sentences.
+- If the question depends on the user’s home type (e.g., house vs apartment), ask before answering.
+- If the question is general and applies to any home type, answer directly.
+- Be direct, helpful, and easy to understand. Avoid technical jargon unless asked.
+
+Always stay in character as Vesta. These rules apply to every message.`;
+
     let history = [
         {
             role: "user",
-            parts: [{ text: `System prompt: ${initialPrompt}`}]
+            parts:  "What do I need to keep track of in my house?"
         },
         {
             role: "model",
-            parts: [{ text: "Understood."}]
-        },
-        {
-            role: "user",
-            parts: [{text: "What do I need to keep track of in my house?"}]
-        },
-        {
-            role: "model",
-            parts: [{text: "Before I can answer that question I'll need a more information:\n - What type of house do you live in (ex. apartment, house)?\n - "}]
-        },
-        {
-            role: "user",
-            parts: [{text: ""}]
-        },
-        {
-            role: "model",
-            parts: [{text: ""}]
+            parts:  "Before I can answer that question I'll need a more information:\n - What type of house do you live in (ex. apartment, house)?"
         }
     ];
     const response = await ai.models.generateContent({
         model: "gemini-2.0-flash",
         contents: input,
         config: {
+            systemInstruction: initialPrompt,
             maxOutputTokens: 500,
             temperature: 0.1
         },
-        history
+        history: history
     });
     return response.text;
 }
