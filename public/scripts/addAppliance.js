@@ -149,19 +149,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     userEmail: userData.email
                 })
             });
-            
-            const savedAppliance = await saveResponse.json();
-            
+
+            const saveResult = await saveResponse.json();
+
             if (!saveResponse.ok) {
                 throw new Error('Failed to save appliance');
             }
-            
+
             // Reset the form
             resetAddApplianceCard();
-            
+
             // Create a new reminder card with the returned ID
             createReminderCard({
-                _id: savedAppliance.insertedId,
+                _id: saveResult.insertedId, // Use the returned ID
                 name: applianceName,
                 lastServiceDate: `${serviceYear}-${serviceMonth}`,
                 type: applianceType

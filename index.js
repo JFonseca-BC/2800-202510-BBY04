@@ -213,7 +213,11 @@ async function setupServer() {
                 createdAt: new Date()
             });
 
-            res.status(201).json({ success: true });
+            res.status(201).json({ 
+                success: true,
+                insertedId: appliancesCollection.insertedId
+            });
+        
         } catch (error) {
             console.error("Error saving appliance:", error);
             res.status(500).json({ error: "Internal server error" });
