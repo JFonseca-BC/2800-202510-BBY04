@@ -1,4 +1,5 @@
 require("dotenv").config();
+const { GoogleGenAI } = require("@google/genai");
 
 const express = require("express");
 const session = require("express-session");
@@ -9,6 +10,7 @@ const fs = require("fs");
 const Joi = require("joi");
 const { ObjectId } = require('mongodb');
 
+const ai = new GoogleGenAI({apiKey: process.env.GOOGLE_API_KEY });
 
 const app = express();
 const port = 8000;
@@ -370,6 +372,15 @@ async function setupServer() {
 
 
 
+    app.get("/vestabot", async (req, res) => {
+        res.sendFile(path.join(__dirname, "app", "html", "vestabot.html"));
+    });
+
+    app.post("/vestabotChat", async (req, res) => {
+        let outputText = await chat(req.body.input);
+        res.send(outputText);
+    });
+
     app.get("*dummy", (req, res) => {
         res.status(404);
         res.send("Page not found - 404");
@@ -382,6 +393,46 @@ async function setupServer() {
 }
 
 setupServer();
+
+async function chat(input) {
+    let initialPrompt = fs.readFileSync(path.join(__dirname, "app", "prompts", "initial-prompt.txt"));
+    let history = [
+        {
+            role: "user",
+            parts: [{ text: `System prompt: ${initialPrompt}`}]
+        },
+        {
+            role: "model",
+            parts: [{ text: "Understood."}]
+        },
+        {
+            role: "user",
+            parts: [{text: "What do I need to keep track of in my house?"}]
+        },
+        {
+            role: "model",
+            parts: [{text: "Before I can answer that question I'll need a more information:\n - What type of house do you live in (ex. apartment, house)?\n - "}]
+        },
+        {
+            role: "user",
+            parts: [{text: ""}]
+        },
+        {
+            role: "model",
+            parts: [{text: ""}]
+        }
+    ];
+    const response = await ai.models.generateContent({
+        model: "gemini-2.0-flash",
+        contents: input,
+        config: {
+            maxOutputTokens: 500,
+            temperature: 0.1
+        },
+        history
+    });
+    return response.text;
+}
 
 /**
  * Returns an array of the different letter groupings of chemicals, based on their first 
