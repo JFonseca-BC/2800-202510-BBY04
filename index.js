@@ -198,14 +198,15 @@ async function setupServer() {
         try {
             const { name, lastServiceDate, type, userEmail } = req.body;
 
-            // Validate input
-            if (!name || !lastServiceDate || !type || !userEmail) {
-                return res.status(400).json({ error: "Missing required fields" });
-            }
+                // Validate input
+                if (!name || !lastServiceDate || !type || !userEmail) {
+                    return res.status(400).json({ error: "Missing required fields" });
+                }
 
-            // Save to database
-            const appliancesCollection = database.collection("appliances");
-            await appliancesCollection.insertOne({
+                const appliancesCollection = database.collection("appliances");
+
+                // Save to database
+                const result = await appliancesCollection.insertOne({
                 name,
                 lastServiceDate,
                 type,
@@ -213,9 +214,10 @@ async function setupServer() {
                 createdAt: new Date()
             });
 
+            // Return the inserted ID to the client
             res.status(201).json({ 
                 success: true,
-                insertedId: appliancesCollection.insertedId
+                insertedId: result.insertedId
             });
         
         } catch (error) {
@@ -270,6 +272,11 @@ async function setupServer() {
 
         try {
             const { id } = req.params;
+
+            if (!ObjectId.isValid(id)) {
+                return res.status(400).json({ error: "Invalid appliance ID" });
+            }
+
             const appliancesCollection = database.collection("appliances");
             const result = await appliancesCollection.deleteOne({
                 _id: new ObjectId(id),
@@ -295,6 +302,11 @@ async function setupServer() {
 
         try {
             const { id } = req.params;
+
+            if (!ObjectId.isValid(id)) {
+                return res.status(400).json({ error: "Invalid appliance ID" });
+            }
+
             const currentDate = new Date();
             const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
 
