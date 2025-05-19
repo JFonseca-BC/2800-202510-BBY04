@@ -16,7 +16,7 @@
 
     <body class="bg-light">
         <nav id="navbarPlaceholder"></nav>
-        <div class="mx-auto p-3 d-flex flex-column align-items-center bg-white shadow rounded my-4" style="width: 70%">
+        <div class="mx-auto p-3 d-flex flex-column align-items-center bg-white shadow rounded my-4" style="width: 90%">
             <button onclick="downloadPDF()" class="btn btn-outline-primary my-2 shadow-sm">Download PDF</button>
             <div id="sds-document" class="container border p-5 my-2 bg-white rounded">
                 <h1 class="mx-auto p-2 d-flex justify-content-center"><strong>Safety Data Sheets</strong></h1>
@@ -44,7 +44,7 @@
                         <p><%= chemicalJSON.hazard_identification.hazards %></p>
                     </div>
                     <div class="list-group-item">
-                        <h4 class="p-3 rounded bg-dark-subtle">3. Composition/Ingredients</h4>
+                        <h4 class="p-3 rounded bg-dark-subtle">3. Composition & Ingredients</h4>
                         <div class="row row-cols-1 row-cols-md-2">
                             <p class="col fw-bolder">Component:</p>
                             <p class="col"><%= chemicalJSON.composition_information.component %></p>
@@ -101,7 +101,7 @@
                         </div>
                     </div>
                     <div class="list-group-item">
-                        <h4 class="p-3 rounded bg-dark-subtle">8. Exposure Controls/Personal Protection</h4>
+                        <h4 class="p-3 rounded bg-dark-subtle">8. Exposure Controls & Personal Protection</h4>
                         <div class="row row-cols-1 row-cols-md-2">
                             <p class="col fw-bolder">Engineering Measures:</p>
                             <p class="col"><%= chemicalJSON.exposure_controls_personal_protection.engineering_measures %></p>
