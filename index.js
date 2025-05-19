@@ -42,10 +42,10 @@ async function setupServer() {
     }));
 
     // Serve Static Files
-    app.use("/images", express.static(path.join(__dirname, "images")));
-    app.use("/public", express.static(path.join(__dirname, "public")));
-    app.use("/images", express.static(path.join(__dirname, "images")));
-    app.use("/app", express.static(path.join(__dirname, "app")));
+    app.use("/images", express.static(path.join(__dirname, "public", "images")));
+    app.use("/scripts", express.static(path.join(__dirname, "public", "scripts")));
+    app.use("/styles", express.static(path.join(__dirname, "public", "styles")));
+    app.use("/templates", express.static(path.join(__dirname, "app", "html", "templates")));
 
     app.set("view engine", "ejs");
     app.set("views", path.join(__dirname, "app", "views"));
