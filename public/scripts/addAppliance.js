@@ -35,7 +35,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     <div class="mb-3">
                         <label for="applianceName" class="form-label">Appliance Name</label>
-                        <input type="text" class="form-control" id="applianceNameInput" required>
+                        <input type="text" class="form-control" id="applianceNameInput" 
+                            pattern="[a-zA-Z0-9 ]+" 
+                            title="Only letters, numbers, and spaces are allowed"
+                            required>
+                        <div class="invalid-feedback">Please use only letters and numbers (no special characters)</div>
                     </div>
                     
                     <div class="mb-3">
@@ -129,6 +133,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!applianceName || !serviceMonth || !serviceYear || !applianceType) {
             alert('Please fill out all fields');
+            return;
+        }
+
+        const nameRegex = /^[a-zA-Z0-9 ]+$/;
+        if (!nameRegex.test(applianceName)) {
+            document.getElementById('applianceNameInput').classList.add('is-invalid');
+            alert('Appliance name can only contain letters, numbers, and spaces');
             return;
         }
         
