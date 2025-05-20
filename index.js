@@ -399,7 +399,7 @@ async function setupServer() {
 
     app.get("*dummy", (req, res) => {
         res.status(404);
-        res.send("Page not found - 404");
+        res.sendFile(path.join(__dirname, "app", "html", "404.html"));
     });
 
     // Start Server
