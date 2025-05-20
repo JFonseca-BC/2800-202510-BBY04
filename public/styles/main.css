@@ -14,12 +14,14 @@
     margin: auto;
     margin-top: 80px;
     align-items: center;
-    background: linear-gradient(45deg, #ce9347, #c850c0);
-    color: black;
+    background: linear-gradient(45deg, #dfaeb4, #dd9ac2);
+    color: #fff;
     padding: 15px;
     border-radius:15px ;
     cursor: pointer;
-    
+    border: solid 1px #b486ab;
+    max-width: 40em;
+    min-width: 20em;
     
 }
 
