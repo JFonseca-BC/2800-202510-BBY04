@@ -28,6 +28,11 @@ document.addEventListener('DOMContentLoaded', function() {
         addApplianceCard.innerHTML = `
             <div class="card-body" id="applianceFormBody">
                 <form id="applianceForm">
+
+                    <div class="alert alert-light bg-light-red border-danger mb-3 p-2">
+                        <small class="text-danger"><i class="bi bi-exclamation-circle-fill me-1"></i> All fields are required</small>
+                    </div>
+
                     <div class="mb-3">
                         <label for="applianceName" class="form-label">Appliance Name</label>
                         <input type="text" class="form-control" id="applianceNameInput" required>
