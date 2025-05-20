@@ -1,18 +1,7 @@
-.centered-image{
- display:block;
- margin:auto;
- width: 40%;
- height: auto;
- border-radius: 200px;
- margin-top: 170px;
-
-}
-
-
 .button{
     display: block;
     margin: auto;
-    margin-top: 80px;
+    margin-top: 2em;
     align-items: center;
     background: linear-gradient(45deg, #dfaeb4, #dd9ac2);
     color: #fff;
@@ -20,8 +9,7 @@
     border-radius:15px ;
     cursor: pointer;
     border: solid 1px #b486ab;
-    max-width: 20em;
-    min-width: 15em;
+    min-width: 20em;
     
 }
 
@@ -42,60 +30,30 @@
     animation: shake 0.3s ease-in-out;
 }
 
-/* #logo{
-    width: 50px;
-     margin-left: 10px
+/* Welcome message styling */
+#welcomeMessage {
+    background: linear-gradient(45deg, #b486ab, #82667f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    font-size: clamp(2rem, 6vw, 4rem);
+    overflow: hidden;
+    white-space: nowrap;
 }
 
-#profile{
-    margin-right: 25px;
-    width: 50px;
-    border-radius:30px ;
-} */
-
-/* #navbarPlaceholder{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 60px;
-    background-color: #333;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-   
-} */
-
-/* #footerPlaceholder{
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 60px; 
-    background-color: #333;
-    border-top: 3px solid #ccc;
-    padding: 10px;
-    align-items: center;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+@media only screen and (max-width: 992px) {
+  #welcomeMessage {
+    padding-top: 2.5em;
+  }
 }
 
-#contacts{
-   width: 50px; 
-   border-radius:30px ;
-}
+@media only screen and (min-width: 993px) {
+  #footerPlaceholder {
+    display: none;
+  }
 
-#sds{
-    width: 50px; 
-    border-radius:30px ; 
+  #welcomeMessage {
+    margin-top: -15px;
+  }
 }
-
-#home{
-     width: 50px; 
-     border-radius:30px ;
-     margin-right: 25px;
-} */
