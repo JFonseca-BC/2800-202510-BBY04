@@ -72,8 +72,7 @@ async function loadChatHistory()
     });
 
     const chatHistory = await response.json();
-    
-    if(chatHistory.length !== 0)
+    if(Array.isArray(chatHistory) && chatHistory.length !== 0)
     {
         chatHistory.forEach(async messageObj => {
             await addChatBubble(messageObj.parts[0].text, messageObj.role);
