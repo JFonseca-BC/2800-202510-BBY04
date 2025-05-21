@@ -60,8 +60,6 @@ async function setupServer() {
 
     // Register Route
     app.post("/register", async (req, res) => {
-        console.log("Received registration request:", req.body);
-
         const { name, email, password } = req.body;
         if (!name || !email || !password) return res.status(400).send("Missing required fields.");
 
@@ -73,7 +71,6 @@ async function setupServer() {
             await userCollection.insertOne({ name, email, password: hashedPassword });
 
             req.session.user = { name, email };
-            console.log("User registered successfully:", name, email);
             res.redirect("/main");
         } catch (error) {
             console.error("Registration error:", error);
@@ -151,7 +148,7 @@ async function setupServer() {
 
         var substance_name = req.params.substance_name;
 
-        const schema = Joi.string().max(30).required();
+        const schema = Joi.string().max(50).required();
         const validationResult = schema.validate(substance_name);
         if (validationResult.error != null) {
             res.redirect("/sds");
@@ -167,10 +164,10 @@ async function setupServer() {
         res.render("sdsTemplate", { chemicalJSON: chemicalJSON[0] });
     });
 
-    app.post("/sdsSearch", async (req, res) => {
+    app.post("/sds/search", async (req, res) => {
         let searchInput = req.body.search;
 
-        const schema = Joi.string().max(30).required();
+        const schema = Joi.string().max(50).required();
         const validationResult = schema.validate(searchInput);
 
         if (validationResult.error != null) {

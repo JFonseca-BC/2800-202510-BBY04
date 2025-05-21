@@ -15,7 +15,7 @@ const originalHTML =  linksContainer.innerHTML;
  */
 async function getChemicalsJSON(query)
 {
-    const response = await fetch("/sdsSearch", {
+    const response = await fetch("/sds/search", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

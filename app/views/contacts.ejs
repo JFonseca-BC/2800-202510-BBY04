@@ -29,12 +29,11 @@
             <input type="hidden" name="lat" id="lat">
             <input type="hidden" name="lon" id="lon">
 
-            <div class="mb-3">
-                <label for="issue" class="form-label">What’s Broken?</label>
-                <input type="text" class="form-control" id="issue" name="issue" required>
+            <div class="mb-3 input-group">
+                <label for="issue" class="input-group-text"><i class="material-icons">search</i></label>
+                <input type="text" class="form-control" id="issue" name="issue" placeholder="What’s Broken?" required>
+                <button class="btn btn-primary">Search</button>
             </div>
-
-            <button type="submit" class="btn btn-primary">Search</button>
         </form>
 
         <div id="map"></div>

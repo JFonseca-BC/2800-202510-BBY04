@@ -25,14 +25,14 @@
         <div class="w-75">
             <div class="d-none d-lg-flex justify-content-center flex-row flex-wrap align-items-center text-center my-3 w-100" id="letter-grouping-container" role="group">
                 <% letterGroups.forEach((letter)=> { %>
-                    <a href="#<%= letter %>" class="btn btn-outline-secondary col shadow-sm" style="margin: 2px;">
+                    <a href="#<%= letter %>" class="btn btn-secondary col shadow-sm" style="margin: 2px;">
                         <%= letter %>
                     </a>
                 <% }); %>
             </div>
             <div class="d-lg-none my-3 text-center">
                 <div class="dropdown-center">
-                    <button class="btn btn-outline-primary fw-bolder dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">Sections</button>
+                    <button class="btn btn-primary dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">Sections</button>
                     <ul class="dropdown-menu overflow-y-scroll" style="height: 20vh;">
                         <% letterGroups.forEach((letter)=> { %>
                             <li>
