@@ -17,33 +17,22 @@
     <!-- Other libraries and styles -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/styles/style.css">
-    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/vestabot.css">
 </head>
 
 <body>
     <nav id="navbarPlaceholder"></nav>
 
-    <div class="row d-flex justify-content-center my-5">
-        <div class="col-md-8 col-lg-6 col-xl-5">
-            <div class="card" style="border-radius: 15px;">
-                <div class="card-header d-flex justify-content-between align-items-center p-3 bg-success text-white border-bottom-0"
-                    style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                    <i class="fas fa-angle-left"></i>
-                    <p class="mb-0 fw-bold">VestaBot</p>
-                    <i class="fas fa-times"></i>
+    <div class="row d-flex justify-content-center my-5 mx-5" id="chatContainer">
+        <div class="col-md-11 col-lg-6 col-xl-5">
+            <div class="card">
+                <div id="chatHeader" class="card-header d-flex justify-content-center align-items-center p-3 border-bottom-0">
+                    <h2 class="mb-0 fw-bold text-center">Vesta</h2>
                 </div>
-                <div class="card-body" id="chat">
-                   
-
-                    
-                </div>
-                <div class="form-outline m-3">
-                    <input type="text" class="form-control bg-body-tertiary" placeholder="Type your message" id="user-text">
-                    <div class="form-notch">
-                        <div class="form-notch-leading" style="width: 9px;"></div>
-                        <div class="form-notch-middle" style="width: 120px;"></div>
-                        <div class="form-notch-trailing"></div>
-                    </div>
+                <div class="card-body fs-5 fw-medium overflow-y-scroll overflow-x-auto" id="chat"></div>
+                <div class="input-group p-3">
+                    <label for="user-text" class="pe-3"><img src="/images/vestabot-icon.png" class="align-middle footer-icon-img rounded-4"></label>
+                    <input type="text" class="form-control bg-body-tertiary rounded-start" placeholder="Type your message" id="user-text">
                 </div>
             </div>
         </div>

@@ -4,8 +4,8 @@ const chatBox = document.getElementById("chat");
 function addUserChatElement(userInput)
 {
     chatBox.innerHTML += `
-        <div class="d-flex flex-row justify-content-end mb-4">
-            <div class="p-3 ms-1 border" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+        <div class="d-flex flex-row justify-content-end mb-3">
+            <div class="p-3 ms-1 border align-middle rounded-4 userChatBubble">
                 <p class="small mb-0">${userInput}</p>
             </div>
         </div>
@@ -15,8 +15,8 @@ function addUserChatElement(userInput)
 function addVestaChatElement(vestaOutput)
 {
     chatBox.innerHTML += `
-        <div class="d-flex flex-row justify-content-start mb-4">
-            <div class="p-3 me-1 border bg-body-tertiary" style="border-radius: 15px;">
+        <div class="d-flex flex-row justify-content-start mb-3">
+            <div class="p-3 me-1 border bg-body-tertiary align-middle rounded-4">
                 <p class="small mb-0">${vestaOutput}</p>
             </div>
         </div>        
@@ -54,6 +54,7 @@ async function chat(event)
     }
 
     addUserChatElement(userInput);
+    userTextInput.value = "";
 
     const vestaOutput = await getVestabotResponse(userInput);
 
