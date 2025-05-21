@@ -94,11 +94,21 @@ document.addEventListener('DOMContentLoaded', function() {
             resetAddApplianceCard();
         });
         
-        // Add event listener for form submission
         document.getElementById('applianceForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            e.stopPropagation(); // Prevent the card click event from firing
-            saveAppliance();
+            e.stopPropagation();
+            
+            // Disable the save button
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+            
+            saveAppliance()
+                .finally(() => {
+                    // Re-enable the button after save completes (success or failure)
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = 'Save';
+                });
         });
     }
     
