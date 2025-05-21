@@ -389,6 +389,7 @@ async function setupServer() {
     });
 
     app.post("/vestabot/chat", talkToVesta);
+    app.post("/vestabot/history", loadChatHistory);
 
     app.get("*dummy", (req, res) => {
         res.status(404);
@@ -422,6 +423,16 @@ async function talkToVesta(req, res) {
     req.session.vestaChatHistory = vestaChat.getHistory();
 
     res.send(response.text);
+}
+
+async function loadChatHistory(req, res)
+{
+    if(!req.session.vestaChatHistory)
+    {
+        res.json({});
+        return;
+    }
+    res.json(req.session.vestaChatHistory);
 }
 
 /**

@@ -1,26 +1,27 @@
-const userTextInput = document.getElementById("user-text");
-const chatBox = document.getElementById("chat");
+const userTextInput = $("#user-text");
+const chatBox = $("#chat");
 
-function addUserChatElement(userInput)
+async function addChatBubble(vestaOutput, role)
 {
-    chatBox.innerHTML += `
-        <div class="d-flex flex-row justify-content-end mb-3">
-            <div class="p-3 ms-1 border align-middle rounded-4 userChatBubble">
-                <p class="small mb-0">${userInput}</p>
-            </div>
-        </div>
-    `;
-}
+    var side = "start";
+    var chatBubbleStyle = "bg-body-tertiary me-1";
 
-function addVestaChatElement(vestaOutput)
-{
-    chatBox.innerHTML += `
-        <div class="d-flex flex-row justify-content-start mb-3">
-            <div class="p-3 me-1 border bg-body-tertiary align-middle rounded-4">
-                <p class="small mb-0">${vestaOutput}</p>
-            </div>
-        </div>        
-    `;
+    if(role == "user")
+    {
+        side = "end";
+        chatBubbleStyle = "userChatBubble ms-1";
+    }
+
+    $.get("/templates/chatBubble.html", (chatBubbleHTML) => {
+        let chatBubble = $(chatBubbleHTML);
+
+        chatBubble.addClass(`justify-content-${side}`);
+
+        chatBubble.find(".chatBubble").addClass(chatBubbleStyle);
+        chatBubble.find("p").text(vestaOutput);
+
+        chatBox.append(chatBubble);
+    });
 }
 
 async function getVestabotResponse(input) {
@@ -53,12 +54,33 @@ async function chat(event)
         return;
     }
 
-    addUserChatElement(userInput);
-    userTextInput.value = "";
+    await addChatBubble(userInput, "user");
+    userTextInput.val("");
 
     const vestaOutput = await getVestabotResponse(userInput);
 
-    addVestaChatElement(vestaOutput);
+    await addChatBubble(vestaOutput, "model");
 }
 
-userTextInput.addEventListener("keydown", chat);
+async function loadChatHistory()
+{
+    const response = await fetch("/vestabot/history", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+
+    const chatHistory = await response.json();
+    
+    if(chatHistory.length !== 0)
+    {
+        chatHistory.forEach(async messageObj => {
+            await addChatBubble(messageObj.parts[0].text, messageObj.role);
+        });
+    }
+
+}
+
+userTextInput.on("keydown", chat);
+$(document).ready(loadChatHistory);

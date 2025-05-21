@@ -15,3 +15,7 @@
     background: linear-gradient(90deg,  #dd9ac2, #f8a8b1);
     color: white;
 }
+
+.chatBubble {
+    max-width: 90%;
+}
