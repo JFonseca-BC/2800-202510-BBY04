@@ -1,6 +1,10 @@
-require("dotenv").config();
-const { GoogleGenAI } = require("@google/genai");
 
+// Load environment variables from .env file
+require("dotenv").config();
+
+
+// Import required modules
+const { GoogleGenAI } = require("@google/genai");
 const express = require("express");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
@@ -10,25 +14,34 @@ const fs = require("fs");
 const Joi = require("joi");
 const { ObjectId } = require('mongodb');
 
+
+// Initialize Google Gemini AI with API key
 const ai = new GoogleGenAI({apiKey: process.env.GOOGLE_API_KEY });
 
+
+// Initialize Express app and configuration
 const app = express();
 const port = 8000;
 const saltRounds = 12;
 
-// Connect to MongoDB Properly
+
+// MongoDB connection setup
 const connectDB = require("./databaseConnection");
 
+
+// Main setup function to start server after DB connection
 async function setupServer() {
     const database = await connectDB();
     const userCollection = database.collection("users");
     const chemicalCollection = database.collection("chemicals");
 
-    // Middleware Setup 
+
+    // Middleware for parsing request bodies
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
 
+    // Setup session management with MongoDB store
     const mongoStore = MongoStore.create({
         mongoUrl: `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}/sessions`,
         crypto: { secret: process.env.MONGODB_SESSION_SECRET }
@@ -41,16 +54,20 @@ async function setupServer() {
         resave: true
     }));
 
+
     // Serve Static Files
     app.use("/images", express.static(path.join(__dirname, "public", "images")));
     app.use("/scripts", express.static(path.join(__dirname, "public", "scripts")));
     app.use("/styles", express.static(path.join(__dirname, "public", "styles")));
     app.use("/templates", express.static(path.join(__dirname, "app", "html", "templates")));
 
+
+    // Set view engine and views directory
     app.set("view engine", "ejs");
     app.set("views", path.join(__dirname, "app", "views"));
 
-    // Root Route
+
+    // Redirect root to login or main page based on session
     app.get("/", (req, res) => {
         if (!req.session.user) {
             return res.redirect("/login");
@@ -58,7 +75,8 @@ async function setupServer() {
         res.redirect("/main");
     });
 
-    // Register Route
+
+    // Register new user
     app.post("/register", async (req, res) => {
         const { name, email, password } = req.body;
         if (!name || !email || !password) return res.status(400).send("Missing required fields.");
@@ -78,12 +96,14 @@ async function setupServer() {
         }
     });
 
+
+    // Show login page
     app.get("/login", (req, res) => {
         res.sendFile(path.join(__dirname, "app", "html", "login.html"));
     });
 
 
-    // Login Route with MongoDB Authentication
+     // Authenticate user and create session
     app.post("/login", async (req, res) => {
         const { email, password } = req.body;
 
@@ -101,7 +121,8 @@ async function setupServer() {
         }
     });
 
-    // Logout Route
+
+    // Logout user and destroy session
     app.post("/logout", (req, res) => {
         req.session.destroy(err => {
             if (err) {
@@ -112,7 +133,8 @@ async function setupServer() {
         });
     });
 
-    // Home Route (Restricted)
+
+    // Protected route to display reminders
     app.get("/reminders", (req, res) => {
         if (!req.session.user) {
             return res.redirect("/login");
@@ -125,12 +147,13 @@ async function setupServer() {
     });
 
 
+    // Protected main page
     app.get("/main", (req, res) => {
         res.sendFile(path.join(__dirname, "app", "html", "main.html"));
     });
 
 
-    // SDS Route
+    // SDS listing route
     app.get("/sds", async (req, res) => {
         if (!req.session.user) {
             return res.redirect("/login");
@@ -141,6 +164,8 @@ async function setupServer() {
         res.render("sds", { chemicalNames: chemicalNames, letterGroups: letterGroups });
     });
 
+
+    // Specific SDS detail page
     app.get("/sds/:substance_name", async (req, res) => {
         if (!req.session.user) {
             return res.redirect("/login");
@@ -164,6 +189,8 @@ async function setupServer() {
         res.render("sdsTemplate", { chemicalJSON: chemicalJSON[0] });
     });
 
+
+    // SDS search API
     app.post("/sds/search", async (req, res) => {
         let searchInput = req.body.search;
 
@@ -178,7 +205,8 @@ async function setupServer() {
         res.json(chemicals);
     });
 
-    // API endpoint to get current user
+
+    // Get current user session info
     app.get("/api/user", (req, res) => {
         if (!req.session.user) {
             return res.status(401).json({ error: "Not authenticated" });
@@ -186,7 +214,8 @@ async function setupServer() {
         res.json({ email: req.session.user.email });
     });
 
-    // API endpoint to save appliance
+
+    // Save a new appliance
     app.post("/api/appliances", async (req, res) => {
         if (!req.session.user) {
             return res.status(401).json({ error: "Not authenticated" });
@@ -223,7 +252,8 @@ async function setupServer() {
         }
     });
 
-    // API endpoint to get appliances for current user
+
+    // Get all appliances for logged-in user
     app.get("/api/appliances", async (req, res) => {
         if (!req.session.user) {
             return res.status(401).json({ error: "Not authenticated" });
@@ -242,7 +272,7 @@ async function setupServer() {
         }
     });
 
-    // API endpoint to get appliance count for current user
+    // Get appliance count for current user
     app.get("/api/appliances/count", async (req, res) => {
         if (!req.session.user) {
             return res.status(401).json({ error: "Not authenticated" });
@@ -261,6 +291,7 @@ async function setupServer() {
         }
     });
 
+    
     // API endpoint to delete an appliance
     app.delete("/api/appliances/:id", async (req, res) => {
         if (!req.session.user) {
@@ -290,6 +321,7 @@ async function setupServer() {
             res.status(500).json({ error: "Internal server error" });
         }
     });
+
 
     // API endpoint to update an appliance's service date
     app.put("/api/appliances/:id", async (req, res) => {
@@ -331,6 +363,8 @@ async function setupServer() {
 
     const axios = require("axios");
 
+
+    // Find handyman contacts using Yelp API
     app.post("/contacts/search", async (req, res) => {
         if (!req.session.user) return res.redirect("/login");
 
@@ -378,19 +412,28 @@ async function setupServer() {
             res.render("contacts", { handymen: [] });
         }
     });
+
+
+    // Render contact form page
     app.get("/contacts", (req, res) => {
         if (!req.session.user) return res.redirect("/login");
         res.render("contacts", { handymen: undefined });
     });
 
+
+    // Chatbot UI page
     app.get("/vestabot", async (req, res) => {
         if (!req.session.user) return res.redirect("/login");
         res.sendFile(path.join(__dirname, "app", "html", "vestabot.html"));
     });
 
+
+    // Vesta chat endpoint
     app.post("/vestabot/chat", talkToVesta);
     app.post("/vestabot/history", loadChatHistory);
 
+
+    // 404 fallback
     app.get("*dummy", (req, res) => {
         res.status(404);
         res.sendFile(path.join(__dirname, "app", "html", "404.html"));
@@ -402,8 +445,12 @@ async function setupServer() {
     });
 }
 
+
+// Initialize server
 setupServer();
 
+
+// AI chat function with Gemini
 async function talkToVesta(req, res) {
     const initialPrompt = fs.readFileSync(path.join(__dirname, "app", "prompts", "initial-prompt.txt"), "utf-8");
     const vestaChat = await ai.chats.create({
@@ -425,6 +472,8 @@ async function talkToVesta(req, res) {
     res.send(response.text);
 }
 
+
+// Send previous Vesta chat history
 async function loadChatHistory(req, res)
 {
     if(!req.session.vestaChatHistory)
@@ -434,6 +483,7 @@ async function loadChatHistory(req, res)
     }
     res.json(req.session.vestaChatHistory);
 }
+
 
 /**
  * Returns an array of the different letter groupings of chemicals, based on their first 
