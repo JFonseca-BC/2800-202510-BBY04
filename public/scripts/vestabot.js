@@ -24,7 +24,7 @@ function addVestaChatElement(vestaOutput)
 }
 
 async function getVestabotResponse(input) {
-    const response = await fetch("/vestabotChat", {
+    const response = await fetch("/vestabot/chat", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
