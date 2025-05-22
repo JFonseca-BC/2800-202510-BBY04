@@ -207,7 +207,7 @@ Members of BBY04:
 - **Yelp** is utilized in helping the user find the contact information of technicians and workers who can help maintain their home.
 
 ### External Source Code/Ideas/Inspiration:
-- Reddit Post r/openstreetmap: [Get the user's location](https://www.reddit.com/r/openstreetmap/comments/iab0ar/get_the_users_location/): The post helped us create the location functionality.
+- Reddit Post r/openstreetmap: [Get the user's location](https://www.reddit.com/r/openstreetmap/comments/iab0ar/get_the_users_location/) - helped us create the location functionality.
 
 ### Data Sources: 
 - [Chemical Safety's Global Database](https://chemicalsafety.com/sds-search/)
@@ -222,6 +222,7 @@ VestAbode by Jacob Fonseca, Esin Sahutoglu, Alexander Fisher, and Ervin Santiago
 [Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/).
 
 Summary of Terms
+
 You are free to:
 - Share — copy and redistribute the material in any medium or format
 - Adapt — remix, transform, and build upon the material
