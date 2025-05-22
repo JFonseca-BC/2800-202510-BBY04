@@ -128,8 +128,8 @@ GOOGLE_API_KEY=<your-google-gemini-api-key>
 YELP_API_KEY=<your-yelp-api-key>
 ```
 Replace the <...> above with associated information. 
-**Note**: You will need Google Gemini and Yelp Business Search API keys.
 
+**Note**: You will need Google Gemini and Yelp Business Search API keys.
 
 ### 4. Installation Order & Location
 Installation Order:
@@ -195,10 +195,10 @@ Members of BBY04:
 
 ## Acknowledgments
 ### APIs:
-- (Google Gemini)[https://ai.google.dev/gemini-api/docs]
-- (Geolocation)[https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API]
-- (Yelp Business Search)[https://docs.developer.yelp.com/reference/v3_business_search]
-- (OpenStreetMap)[https://wiki.openstreetmap.org/wiki/API]
+- [Google Gemini](https://ai.google.dev/gemini-api/docs)
+- [Geolocation](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API)
+- [Yelp Business Search](https://docs.developer.yelp.com/reference/v3_business_search)
+- [OpenStreetMap](https://wiki.openstreetmap.org/wiki/API)
 
 ### API Usage:
 - **Google Gemini** is  utilized in creating a Vesta, which is the AI home maintenance/safety assistant. The AI chat is created utilizing the API key and loaded with the initial prompt and  the current session's chat history. 
@@ -207,10 +207,10 @@ Members of BBY04:
 - **Yelp** is utilized in helping the user find the contact information of technicians and workers who can help maintain their home.
 
 ### External Source Code/Ideas/Inspiration:
-- (Reddit Post r/openstreetmap: Get the user's location)[https://www.reddit.com/r/openstreetmap/comments/iab0ar/get_the_users_location/]: The post helped us create the location functionality.
+- Reddit Post r/openstreetmap: [Get the user's location](https://www.reddit.com/r/openstreetmap/comments/iab0ar/get_the_users_location/): The post helped us create the location functionality.
 
 ### Data Sources: 
-- (Chemical Safety's Global Database)[https://chemicalsafety.com/sds-search/]
+- [Chemical Safety's Global Database](https://chemicalsafety.com/sds-search/)
 
 ### AI Usage:
 AI Tools like ChatGPT, Deepseek Gemini were used in the creation of this project. The AI tools were utilized in helping with creating documentation, commenting, debugging, and code creation. 
