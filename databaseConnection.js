@@ -19,7 +19,11 @@ const atlasURI = `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_ho
 const client = new MongoClient(atlasURI, {});
 
 
-// Define an asynchronous function to connect to MongoDB
+/**
+ * Establishes a connection to the MongoDB database using the MongoDB client.
+ * 
+ * @returns {Object} a reference to the connected MongoDB database instance
+ */
 async function connectDB() {
     try {
 
