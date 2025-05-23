@@ -1,30 +1,44 @@
-const userTextInput = document.getElementById("user-text");
-const chatBox = document.getElementById("chat");
+const userTextInput = $("#user-text");
+const chatBox = $("#chat");
 
-function addUserChatElement(userInput)
-{
-    chatBox.innerHTML += `
-        <div class="d-flex flex-row justify-content-end mb-4">
-            <div class="p-3 ms-1 border" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
-                <p class="small mb-0">${userInput}</p>
-            </div>
-        </div>
-    `;
+/**
+ * Adds a chat bubble to the chat interface with the given message and role. 
+ * The role determines the styling of the bubble and which side of the chatBox the 
+ * chat bubble ends up.
+ * 
+ * @param {string} chatMessage represents the message to display in the chat bubble.
+ * @param {string} role represents the role of the message sender, either "user" or "model".
+ */
+async function addChatBubble(chatMessage, role) {
+    var side = "start";
+    var chatBubbleStyle = "bg-body-tertiary me-1";
+
+    if(role == "user") {
+        side = "end";  // Right aligns the user's chat bubble
+        chatBubbleStyle = "userChatBubble ms-1"; // userChatBubble = user-specific bubble styling
+    }
+
+    // Utilizes html template to create user or model specific chat bubbles
+    $.get("/templates/chatBubble.html", (chatBubbleHTML) => {
+        let chatBubble = $(chatBubbleHTML); 
+
+        chatBubble.addClass(`justify-content-${side}`);
+
+        chatBubble.find(".chatBubble").addClass(chatBubbleStyle);
+        chatBubble.find("p").text(chatMessage);
+
+        chatBox.append(chatBubble);
+    });
 }
 
-function addVestaChatElement(vestaOutput)
-{
-    chatBox.innerHTML += `
-        <div class="d-flex flex-row justify-content-start mb-4">
-            <div class="p-3 me-1 border bg-body-tertiary" style="border-radius: 15px;">
-                <p class="small mb-0">${vestaOutput}</p>
-            </div>
-        </div>        
-    `;
-}
-
+/**
+ * Sends the user's input to the vestabot API and retrieves the chatbot's response.
+ * 
+ * @param {string} input represents the user's message to send to the vestabot.
+ * @returns {Promise<string>} a promise resolving to the vestabot's text response.
+ */
 async function getVestabotResponse(input) {
-    const response = await fetch("/vestabotChat", {
+    const response = await fetch("/vestabot/chat", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -39,25 +53,56 @@ async function getVestabotResponse(input) {
     return responseText;
 }
 
-async function chat(event)
-{
-    if(event.key !== "Enter")
-    {
+/**
+ * Handles the chat input event when the user presses Enter, updates the UI, and fetches a response. 
+ * The handler only accepts  "enter" or "return" keys being pressed. 
+ * 
+ * @param {KeyboardEvent} event represents the keyboard event triggered by user input.
+ */
+async function chat(event) {
+    if(event.key !== "Enter") {
         return;
     }
 
     const userInput = event.target.value.trim();
 
-    if(userInput.length === 0) 
-    {
+    if(userInput.length === 0) {
         return;
     }
 
-    addUserChatElement(userInput);
+    await addChatBubble(userInput, "user");
+    userTextInput.val(""); // Clear the input field after sending
 
     const vestaOutput = await getVestabotResponse(userInput);
 
-    addVestaChatElement(vestaOutput);
+    await addChatBubble(vestaOutput, "model");
 }
 
-userTextInput.addEventListener("keydown", chat);
+/**
+ * Loads the previous chat history from the server and displays it in the chat interface.
+ * If the user has no previous chat history with Vesta, an empty chat window is displayed.
+ */
+async function loadChatHistory() {
+    const response = await fetch("/vestabot/history", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+
+    const chatHistory = await response.json();
+
+    // Displays all past chat messages in the Vesta Chat Window
+    // If statement handles and ignores user's who have no previous chats with Vesta.
+    if(Array.isArray(chatHistory) && chatHistory.length !== 0) {
+        chatHistory.forEach(async messageObj => {
+            await addChatBubble(messageObj.parts[0].text, messageObj.role);
+        });
+    }
+
+}
+
+// Only accepts the user's input when they press "enter" (or "return" on mobile)
+userTextInput.on("keydown", chat);
+
+$(document).ready(loadChatHistory);

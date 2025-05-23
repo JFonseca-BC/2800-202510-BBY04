@@ -1,5 +1,10 @@
-
-// Function to get user's location
+/**
+ * Retrieves the user's current geographic location using the Geolocation API,
+ * performs reverse geocoding with OpenStreetMap's Nominatim API to get a readable
+ * city and country, and displays it in the element with ID 'userLocation'.
+ * 
+ * Displays appropriate messages if location access is denied, unsupported, or fails.
+ */
 function getUserLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(

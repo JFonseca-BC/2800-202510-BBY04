@@ -13,3 +13,15 @@
     cursor: pointer;
     background-color: #00000008;
 }
+
+/* Custom light red background */
+.bg-light-red {
+    background-color: #ffebee;
+}
+
+/* Make the alert small and compact */
+.alert-light {
+    padding: 0.25rem 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.25rem;
+}

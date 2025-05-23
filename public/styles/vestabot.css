@@ -1,0 +1,21 @@
+#chatHeader {
+    background: linear-gradient(45deg, #dfaeb4, #dd9ac2);
+    color: white;
+}
+
+#chat {
+    height: 50vh;
+}
+
+#vestIconInput {
+    width: 50px;
+}
+
+.userChatBubble {
+    background: linear-gradient(90deg,  #dd9ac2, #f8a8b1);
+    color: white;
+}
+
+.chatBubble {
+    max-width: 90%;
+}
