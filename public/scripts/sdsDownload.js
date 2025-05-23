@@ -7,10 +7,11 @@
  */
 async function downloadPDF()
 {
-    let sdsElement = document.getElementById("sds-document").innerHTML;
-    let chemicalName = document.getElementById("chemical-name").innerText;
+    const sdsElement = document.getElementById("sds-document").innerHTML;
+    const chemicalName = document.getElementById("chemical-name").innerText;
     
-    let options = {
+    // PDF generation settings for html2pdf.js
+    const options = {
         margin:       0.5,
         filename:     `${chemicalName}.pdf`,
         image:        {type: "jpeg", quality: 1},

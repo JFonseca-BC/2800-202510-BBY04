@@ -1,0 +1,38 @@
+<!-- Navigation bar -->
+<nav class="navbar bg-light" id="navbarContainer">
+    <!-- Logo link to homepage -->
+    <a class="navbar-brand" href="/main">
+        <img src="/images/logoicon.png" id="logo" />
+    </a>
+
+    <!-- Navigation links: visible only on large screens and up -->
+    <div class="d-none d-lg-flex fs-5 text-center">
+        <a
+            href="/reminders"
+            class="link-light align-middle link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover mx-5"
+            >Reminders</a
+        >
+        <a
+            href="/sds"
+            class="link-light align-middle link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover mx-5"
+            >SDS</a
+        >
+        <a
+            href="/contacts"
+            class="link-light align-middle link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover mx-5"
+            >Technicians</a
+        >
+        <a
+            href="/vestabot"
+            class="link-light align-middle link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover mx-5"
+            >Vesta</a
+        >
+    </div>
+
+    <!-- Logout button aligned to the far right -->
+    <form class="ms-auto" action="/logout" method="POST">
+        <button type="submit" class="btn btn-outline-danger" id="logoutButton">
+            Log Out
+        </button>
+    </form>
+</nav>
